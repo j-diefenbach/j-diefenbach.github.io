@@ -20,3 +20,4 @@ pin: false
 * Machine Learning
 * Neural Networks
 * Coding examples using python
+* [Additional project: AI Battleship](https://github.com/Tinylad/Battleship_Building_Ai)
