@@ -28,7 +28,7 @@ I first implemented basic battleship tactics, and added additional algorithms to
 |  Random & 4dir hunt | 71 |
 |  Random | 97 |
 
-![Overview graph](/assets/improved_prob_comparison.png)
+![Overview graph](/assets/other/improved_prob_comparison.png)
 
 ## Additional testing methods
 To test large amounts of battleship games using different methods, I ran a C program implementing the above methods. Using command arguments, it determined the appropriate hunt and seek methods, and other adjustment parameters[^Battleship-testing]. 
