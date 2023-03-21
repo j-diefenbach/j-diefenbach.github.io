@@ -9,7 +9,8 @@ tags: [AI, vb.NET, .NET]     # TAG names should always be lowercase
 HSC Software Design and Development assignment: Battleship in visual basic / .NET
 
 | [Github repo](https://github.com/Tinylad/SDD_Battleship) \| Marked 98% - 1st in class
-
+> The approaches I learnt during this project, was later iterated on and I plan to try out some more approaches in the future
+{: .prompt-info }
 ---
 
 Refer to documentation for thorough overview of both development process and algorithm / design explanations
