@@ -24,7 +24,7 @@ title: James Diefenbach                          # the main title
 tagline: A 2nd year undergraduate's personal portfolio    # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  A site for my portfolio as a undergraduate student. It shows the events and experience I have, in coding, stats, neuroscience, 3D modelling, design and my generalist background.
+  A site for my portfolio as a undergraduate student. All about my experience with coding, stats, neuroscience, 3D modelling, design and my generalist background.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://j-diefenbach.github.io'
@@ -84,7 +84,7 @@ theme_mode:   # [light|dark]
 img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: https://media.licdn.com/dms/image/D5635AQF7UYfNxB6y8g/profile-framedphoto-shrink_200_200/0/1670672089667?e=1677222000&v=beta&t=tsH2mX82nWYDHWUQc6JzkjW-xKk_PebJUgA8ir5LzOc
+avatar: 
 
 # boolean type, the global switch for ToC in posts.
 toc: true

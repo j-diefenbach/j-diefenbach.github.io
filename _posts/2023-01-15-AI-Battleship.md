@@ -39,6 +39,6 @@ There was ofcourse a manual view option, stepping through turns taken by the AI 
 In order to visualise this, I used the output as a csv for Rstudio, and visualised a cumulative frequency distribution graph and compared performance. The graph also gave key information when developing hunting and seeking info, and could be used to interpret the effects of different adjustment factors such as checkerboard size[^Battleship-testing].
 
 ## More
-[^Elements-of-AI]: My [Elements of AI Project](https://github.com/Tinylad/Battleship_Building_Ai) (Mostly concept)
-[^Battleship-testing]: My [Battleship testing program](https://github.com/Tinylad/Battleship) (Also contains analysis and development of algorithms seen here)
+[^Elements-of-AI]: My [Elements of AI Project](https://github.com/j-diefenbach/Battleship_Building_Ai) (Mostly concept)
+[^Battleship-testing]: My [Battleship testing program](https://github.com/j-diefenbach/Battleship) (Also contains analysis and development of algorithms seen here)
 [^Bayesian]: [Playing Battleship with Bayesian Search Theory, Thompson Sampling, and Approximate Bayesian Computation by Austin Richford](https://austinrochford.com/posts/2021-09-02-battleship-bayes.html)

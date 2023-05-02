@@ -8,7 +8,7 @@ tags: [AI, vb.NET, .NET]     # TAG names should always be lowercase
 # SDD_Battleship
 HSC Software Design and Development assignment: Battleship in visual basic / .NET
 
-| [Github repo](https://github.com/Tinylad/SDD_Battleship) \| Marked 98% - 1st in class
+| [Github repo](https://github.com/j-diefenbach/SDD_Battleship) \| Marked 98% - 1st in class
 > The approaches I learnt during this project, was later iterated on and I plan to try out some more approaches in the future
 {: .prompt-info }
 ---
