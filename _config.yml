@@ -27,10 +27,10 @@ description: >-                        # used by seo meta and the atom feed
   A site for my portfolio as a undergraduate student. It shows the events and experience I have, in coding, stats, neuroscience, 3D modelling, design and my generalist background.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
-url: 'https://Tinylad.github.io'
+url: 'https://j-diefenbach.github.io'
 
 github:
-  username: Tinylad             # change to your github username
+  username: j-diefenbach             # change to your github username
 
 twitter:
   username: twitter_username            # change to your twitter username
@@ -46,7 +46,7 @@ social:
   links:
     # The first element serves as the copyright owner's link
     - https://twitter.com/username      # change to your twitter homepage
-    - https://github.com/Tinylad      # change to your github homepage
+    - https://github.com/j-diefenbach      # change to your github homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
     - https://www.linkedin.com/in/james-diefenbach
@@ -112,7 +112,7 @@ comments:
 # Self-hosted static assets, optional › https://github.com/cotes2020/chirpy-static-assets
 assets:
   self_host:
-    enabled:      # boolean, keep empty means false
+    enabled: true     # boolean, keep empty means false
     # specify the Jekyll environment, empty means both
     # only works if `assets.self_host.enabled` is 'true'
     env:          # [development|production]
