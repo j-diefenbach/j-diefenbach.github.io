@@ -1,48 +1,42 @@
-"use client"
-import { Navbar } from "@/components";
-import { Avatar, Box, Button, Chip, InputAdornment, MenuItem, Modal, Popover, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
+"use client";
+import { Box, Button, Chip, InputAdornment, MenuItem, Modal, Popover, Stack, Switch, TextField, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from "@mui/material/IconButton";
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import React from "react";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { GithubPicker, TwitterPicker } from 'react-color';
-import { AlarmOn, BackHand, Close, FirstPage, FlagCircle, FrontHandOutlined, InvertColors, LabelImportant, Pause, PlayArrow } from "@mui/icons-material";
-import { TimeIcon } from "@mui/x-date-pickers";
-import { HandRaisedIcon } from "@heroicons/react/24/solid";
-import next from "next";
+import { GithubPicker } from 'react-color';
+import { AlarmOn, BackHand, Close, FlagCircle, FrontHandOutlined, LabelImportant, Pause, PlayArrow, PunchClock } from "@mui/icons-material";
+
 export default function Timer() {
     const [timeLeft, setTimeLeft] = React.useState(10)
     const [timePerRound, setTimePerRound] = React.useState(0)
     const [timePerTurn, setTimePerTurn] = React.useState(60)
-    const [players, setPlayers] = React.useState([])
-    const [playerColours, setPlayerColours] = React.useState([])
-    const [newPlayer, setNewPlayer] = React.useState("")
-    const [currentPlayer, setCurrentPlayer] = React.useState(0)
+    const [players, setPlayers] = React.useState<string[]>([])
+    const [playerColours, setPlayerColours] = React.useState<string[]>([])
+    const [newPlayer, setNewPlayer] = React.useState<string>("")
+    const [currentPlayer, setCurrentPlayer] = React.useState<number>(0)
 
     const [firstPlayerTokenMode, setFirstPlayerTokenMode] = React.useState(0) // 0 = none, 1 = random each round, 2 = move each round, 3 = stealable
     const [turnNumber, setTurnNumber] = React.useState(0) // number of turns taken in current game
     const [roundNumber, setRoundNumber] = React.useState(0) // number of rounds taken in current game
     const [totalTimePerPlayer, setTotalTimePerPlayer] = React.useState([0])
-    const [playerStats, setPlayerStats] = React.useState([0])
+    const [_playerStats, setPlayerStats] = React.useState([0])
     const [negativeTimeOverFlow, setNegativeTimeOverflow] = React.useState(false)
     const [positiveTimeOverflow, setPositiveTimeOverflow] = React.useState(true)
     const [roundsEnabled, setRoundsEnabled] = React.useState(false)
     const [premovingEnabled, setPremovingEnabled] = React.useState(false)
-    const [premoves, setPremoves] = React.useState([]) // array of indexes of players who have premoved (only one per player)
+    const [premoves, setPremoves] = React.useState<number[]>([]) // array of indexes of players who have premoved (only one per player)
     const [playersPassed, setPlayersPassed] = React.useState<number[]>([]) // array of indexes of players who have passed this round
     const [firstPlayer, setFirstPlayer] = React.useState(0) // index of first player in current round
     
     // TODO colour list for different games
-    const gameColours = {
-        // 'Catan': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff'],
-        // 'Monopoly': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff', "#FFFFFF", "#000000ff"],
-        // 'Ticket to Ride': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff', '#FCB900', '#9900EF'],
-        // 'Carcassonne': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff', '#df25baff', '#14eba3ff'],
-        // 'Pandemic': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff', '#516d77ff', '#339c75ff', '#94a5dcff', '#9bcecbff']
-        'Terraforming Mars': ['#ff1500ff', '#18ab50', '#12329dff', '#64e23eff', '#20081bff']
-    }
+    // const gameColours = {
+    //     // 'Catan': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff'],
+    //     // 'Monopoly': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff', "#FFFFFF", "#000000ff"],
+    //     // 'Ticket to Ride': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff', '#FCB900', '#9900EF'],
+    //     // 'Carcassonne': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff', '#df25baff', '#14eba3ff'],
+    //     // 'Pandemic': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff', '#516d77ff', '#339c75ff', '#94a5dcff', '#9bcecbff']
+    //     'Terraforming Mars': ['#ff1500ff', '#18ab50', '#12329dff', '#64e23eff', '#20081bff']
+    // }
     // TODO select game to get preset colours
     const colours = 
     ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff', "#FFFFFF", "#000000ff", '#FCB900', '#9900EF', '#df25baff', '#14eba3ff', '#516d77ff', '#339c75ff', '#94a5dcff', '#9bcecbff']
@@ -62,12 +56,12 @@ export default function Timer() {
     // - simple turn timer (current)
     // - time per round (all players get timePerTurn each round, then next round)
     const [open, setOpen] = React.useState(false)
-    const [endTime, setEndTime] = React.useState([Date.now()])
+    const [endTime, _setEndTime] = React.useState([Date.now()])
     const [editingColour, setEditingColour] = React.useState(false)
     const [colourEditTarget, setColourEditTarget] = React.useState(-1)
     const [newColour, setNewColour] = React.useState(colours[0])
     const [paused, setPaused] = React.useState([false])
-    function decrementTimer(end, pause) {
+    function decrementTimer(end: number[], pause: any[]) {
         if (pause && !pause[0]) {
             const time = end[0] - Date.now();
             // console.log(end, time)
@@ -162,8 +156,8 @@ export default function Timer() {
     }
 
     function deletePlayer(i: number) {
-        setPlayers(players.filter((val, idx) => idx !== i))
-        setPlayerColours(playerColours.filter((val, idx) => idx !== i))
+        setPlayers(players.filter((_val, idx) => idx !== i))
+        setPlayerColours(playerColours.filter((_val, idx) => idx !== i))
         setNewColour(colours[players.length % colours.length])
     }
 
@@ -172,7 +166,7 @@ export default function Timer() {
         return () => clearInterval(interval);
     }, []);
 
-    function colorIsDarkSimple(bgColor) {
+    function colorIsDarkSimple(bgColor: string) {
         if (!bgColor) return false; // default to light if undefined
         let color = (bgColor.charAt(0) === '#') ? bgColor.substring(1, 7) : bgColor;
         let r = parseInt(color.substring(0, 2), 16); // hexToR
@@ -182,14 +176,13 @@ export default function Timer() {
     }
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);    
-    const openColourPicker = (event: React.MouseEvent<HTMLButtonElement>, i=-1) => {
+    const openColourPicker = (event: any, i=-1) => {
         setColourEditTarget(i)
         setAnchorEl(event.currentTarget);
         setEditingColour(true)
     };
 
     return <>
-        <Navbar />
             <div className="container mx-auto p-8">
                 <h1 className="text-4xl font-bold mb-4">Board Game Timer</h1>
                 <p className="mb-4">Customisable timer for multiple players</p>
@@ -223,7 +216,7 @@ export default function Timer() {
                                         horizontal: 'left',
                                     }}
                                 >
-                                    <GithubPicker color="ababab" colors={colours} onChangeComplete={(e) => {
+                                    <GithubPicker color="ababab" colors={colours} onChangeComplete={(e: { hex: React.SetStateAction<string>; }) => {
                                         console.log(e.hex)
                                         console.log(colourEditTarget)
                                         if (colourEditTarget === -1) {
@@ -231,7 +224,7 @@ export default function Timer() {
                                             setNewColour(e.hex)
                                         } else {
                                             // change for a certain player index
-                                            playerColours[colourEditTarget] = e.hex
+                                            playerColours[colourEditTarget] = e.hex as string
                                         }
                                         setEditingColour(false)
                                     }}/>
@@ -277,7 +270,7 @@ export default function Timer() {
                             input: {
                                 endAdornment: (
                                     <InputAdornment position="start">
-                                        <TimeIcon />
+                                        <PunchClock />
                                     </InputAdornment>
                                 ),
                             },
@@ -297,7 +290,7 @@ export default function Timer() {
                             input: {
                                 endAdornment: (
                                     <InputAdornment position="start">
-                                        <TimeIcon />
+                                        <PunchClock />
                                     </InputAdornment>
                                 ),
                             },
@@ -482,7 +475,6 @@ export default function Timer() {
                                     borderRadius: '20px',
                                     paddingLeft: '20px',
                                     paddingRight: '20px',
-                                    paddingTop: '10px',
                                     paddingBottom: '10px',
                                     // background: (timeLeft / (timePerTurn * 1000)) * 100 > 50 ? "rgba(0, 0, 0, 0.3)" : "rgba(255, 255, 255, 0.3)",
                                     background: playerColours[currentPlayer % players.length],
@@ -508,7 +500,7 @@ export default function Timer() {
                                 </Typography>
                             </Button> */}
                             
-                            { players.map((x, i) => 
+                            { players.map((_x, i) => 
                             <Button
                             variant="outlined"
                             // disabled if player has passed
