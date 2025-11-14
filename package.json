@@ -6,7 +6,7 @@
   "license": "See license in https://www.creative-tim.com/license",
   "homepage": "https://github.com/themewagon/Next.js-Tailwind-CSS-Portfolio-Template",
   "scripts": {
-    "dev": "next dev -p 3005",
+    "dev": "next dev -p 3005 -- -H 192.168.0.47",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -25,11 +25,13 @@
     "@webgpu/types": "^0.1.65",
     "dayjs": "^1.11.18",
     "next": "13.4.0",
+    "nosleep.js": "^0.12.0",
     "react": "18",
     "react-color": "^2.19.3",
     "react-dom": "^18.3.1",
     "react-is": "18.2",
-    "react-router-hash-link": "^2.4.3"
+    "react-router-hash-link": "^2.4.3",
+    "use-stay-awake": "^0.1.7"
   },
   "devDependencies": {
     "@types/node": "20",

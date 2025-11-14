@@ -104,7 +104,7 @@ export default function Hashi() {
         console.log('startPuzzle', startPuzzle);
     }, [startPuzzle]);
 
-    function bridgeTooltip(bridges) {
+    function bridgeTooltip(bridges: any) {
         if (bridges.length === 0) return "";
         if (bridges.length === 1) return `${bridges[0].value} `;
         if (bridges.length === 2) return `↕${bridges[0].value} ↔${bridges[1].value}`

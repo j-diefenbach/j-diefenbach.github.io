@@ -18,7 +18,7 @@ const RESUME_ITEMS = [
   },
   {
     icon: ChartBarIcon,
-    children: <>1+ years <br/>Research Assistant experience</>,
+    children: <>1.5 years <br/>Research Assistant experience</>,
   },
   {
     icon: CpuChipIcon,

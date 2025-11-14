@@ -80,7 +80,7 @@ export function Navbar() {
             </NavItem>
           ))}
         </ul>
-        <div className="hidden items-center gap-2 lg:flex">
+        {/* <div className="hidden items-center gap-2 lg:flex">
           <Button variant="text">Sign In</Button>
           <a href="#">
             <Button color="gray">blocks</Button>
@@ -98,10 +98,10 @@ export function Navbar() {
           ) : (
             <Bars3Icon strokeWidth={2} className="h-6 w-6" />
           )}
-        </IconButton>
+        </IconButton> */}
         
       </div>
-      <Collapse open={open}>
+      {/* <Collapse open={open}>
         <div className="container mx-auto mt-3 border-t border-gray-200 px-2 pt-4">
           <ul className="flex flex-col gap-4">
             {NAV_MENU.map(({ name, icon: Icon }) => (
@@ -118,7 +118,7 @@ export function Navbar() {
             </a>
           </div>
         </div>
-      </Collapse>
+      </Collapse> */}
     </MTNavbar>
   );
 }
