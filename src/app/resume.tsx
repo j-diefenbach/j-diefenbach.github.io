@@ -10,6 +10,7 @@ import {
   AcademicCapIcon
 } from "@heroicons/react/24/solid";
 import { ResumeItem } from "@/components";
+import { Download, FileDownload, SimCardDownload } from "@mui/icons-material";
 
 const RESUME_ITEMS = [
   {
@@ -46,6 +47,17 @@ export function Resume() {
           >
             view more
             <ArrowRightIcon
+              strokeWidth={3}
+              className="h-3.5 w-3.5 text-gray-900"
+            />
+          </Button>
+          <Button
+            variant="text"
+            color="gray"
+            className="flex items-center gap-2"
+          >
+            Download CV
+            <SimCardDownload
               strokeWidth={3}
               className="h-3.5 w-3.5 text-gray-900"
             />

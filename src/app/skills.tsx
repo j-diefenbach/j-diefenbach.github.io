@@ -53,6 +53,8 @@ const SKILLS = [
 ];
 
 export function Skills() {
+  const isSmall = typeof window !== "undefined" ? window.innerWidth < 1024 : false;
+
   return (
     <section className="px-8">
       <div className="container mx-auto mb-20 text-center">
@@ -71,11 +73,27 @@ export function Skills() {
           projects to coursework and research assistant roles.
         </Typography>
       </div>
-      <div className="container mx-auto grid grid-cols-1 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-        {SKILLS.map((props, idx) => (
-          <SkillCard key={idx} {...props} />
-        ))}
-      </div>
+      {isSmall === false ? (
+        <div className="container mx-auto grid grid-cols-3 gap-y-10">
+          {SKILLS.map((props, idx) => (
+            <div key={idx}>
+              <SkillCard {...props} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="col-span-full">
+          <div className="flex gap-4 overflow-x-auto px-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-y-10 md:gap-x-6">
+            {SKILLS.map((props, idx) => (
+              <div key={idx} 
+              style={{minWidth: "80%", maxWidth: "100%"}}
+              >
+                <SkillCard {...props} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

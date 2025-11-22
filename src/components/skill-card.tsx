@@ -7,6 +7,7 @@ interface SkillCardProps {
 }
 
 export function SkillCard({ icon: Icon, title, children }: SkillCardProps) {
+  const isSmall = typeof window !== "undefined" ? window.innerWidth < 1024 : false;
   return (
     <Card color="transparent" shadow={false}>
       <CardBody className="grid justify-center text-center">
@@ -16,7 +17,8 @@ export function SkillCard({ icon: Icon, title, children }: SkillCardProps) {
         <Typography variant="h5" color="blue-gray" className="mb-2">
           {title}
         </Typography>
-        <Typography className="px-8 font-normal !text-gray-500">
+        <Typography className={`px-8 font-normal !text-gray-500 ${isSmall ? "px-4" : "px8"}`
+      } style = {{fontSize: isSmall ? "12px" : "16px"}}>
           {children}
         </Typography>
       </CardBody>

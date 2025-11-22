@@ -7,6 +7,51 @@ import { DocumentIcon, SparklesIcon } from "@heroicons/react/24/solid";
 
 const PROJECTS = [
   {
+    img: `${getImagePrefix()}image/brainrender2.png`,
+    title: "Whole-brain single-cell network analysis",
+    desc: "Network analysis of whole-brain single-cell data using graph theory including centrality measures and community detection.",
+    tags: ["Python", "Network Analysis", "Graph Theory"],
+    fulltext: 
+    `Single-cell cFos expression data was collected following punishment.
+      Brain regions were represented as nodes and edges defined by inter-region correlations in cFos expression across subjects.
+      Graph theory techniques were applied to analyse the resulting networks, including centrality measures (degree, betweenness, avg shortest path length)
+      and community detection (Louvain algorithm) to identify key regions and modules involved in the behavioural response to punishment.
+      Differences between control and punished  were examined to identify causal targets for further research.
+    `
+  },
+  {
+    img: `${getImagePrefix()}image/deeplabcut.png`,
+    title: "Pose-estimation and behaviour clustering in rodents",
+    desc: "Applications of Deeplabcut and Keypoint-MoSeq to extract data for exploratory analyses. Extended to events of interest e.g. lever presses",
+    tags: ["Python", "Machine Learning", "Neuroscience" ],
+    fulltext:
+    `Deeplabcut was used to perform pose-estimation on videos of rodents performing a punished lever-press task.
+      Keypoint-MoSeq was then applied to the extracted keypoints to identify and cluster behavioural motifs or "syllables".
+      This approach enabled the quantification and analysis of complex behaviours, facilitating insights into approach behaviour, avoidance and avenues for future research.
+      The pipeline was further extended to focus on specific events of interest, such as lever presses, allowing for detailed behavioural analyses in relation to task demands.
+    `
+  },
+  {
+    img: `${getImagePrefix()}image/brain_glow.png`,
+    title: "Brainrender and blender visualisations",
+    desc: "3D visualisations of brain regions, networks and activity using Brainrender and Blender.",
+    tags: ["Python", "Blender", "3D Visualisation", "Neuroscience"],
+  },
+  {
+    img: `${getImagePrefix()}image/miniscope.png`,
+    title: "Miniscope CNMFe and Cell encoding analysis",
+    desc: "Processing and analysis of miniscope calcium imaging data using CNMFe and encoding pipelines.",
+    tags: ["Python", "Time series", "Neuroscience"],
+    fulltext:
+    `Miniscope calcium imaging data was processed using the CNMFe algorithm to extract neuronal activity traces from raw imaging data.
+      Resulting activity traces were encoded for their relevance to alcohol/sucrose consumption events.
+      Proportion of cells encoding bouts of consumption were compared across days.
+      Cell proprtions were then correlated with behavioural metrics to identify relationships between neural activity and behaviour.
+      
+      2024 Summer Vacation Research Scholarship under Prof. Gavan McNally and Dr Zayra Millan.
+    `
+  },
+  {
     img: `${getImagePrefix()}image/tictactoe.png`,
     title: "Super Tic Tac Toe",
     desc: "Super Tic Tac Toe game built with React, featuring an unbeatable AI opponent.",
@@ -62,58 +107,14 @@ const PROJECTS = [
     desc: "Two-layer ensemble model for sea turtle image segmentation using various deep learning techniques.",
     tags: ["Report", "Python", "Machine Learning", "Computer Vision"],
   },
-  {
-    img: `${getImagePrefix()}image/brainrender2.png`,
-    title: "Whole-brain single-cell network analysis",
-    desc: "Network analysis of whole-brain single-cell data using graph theory including centrality measures and community detection.",
-    tags: ["Python", "Network Analysis", "Graph Theory"],
-    fulltext: 
-    `Single-cell cFos expression data was collected following punishment.
-      Brain regions were represented as nodes and edges defined by inter-region correlations in cFos expression across subjects.
-      Graph theory techniques were applied to analyse the resulting networks, including centrality measures (degree, betweenness, avg shortest path length)
-      and community detection (Louvain algorithm) to identify key regions and modules involved in the behavioural response to punishment.
-      Differences between control and punished  were examined to identify causal targets for further research.
-    `
-  },
-  {
-    img: `${getImagePrefix()}image/deeplabcut.png`,
-    title: "Pose-estimation and behaviour clustering in rodents",
-    desc: "Applications of Deeplabcut and Keypoint-MoSeq to extract data for exploratory analyses. Extended to events of interest e.g. lever presses",
-    tags: ["Python", "Machine Learning", "Neuroscience" ],
-    fulltext:
-    `Deeplabcut was used to perform pose-estimation on videos of rodents performing a punished lever-press task.
-      Keypoint-MoSeq was then applied to the extracted keypoints to identify and cluster behavioural motifs or "syllables".
-      This approach enabled the quantification and analysis of complex behaviours, facilitating insights into approach behaviour, avoidance and avenues for future research.
-      The pipeline was further extended to focus on specific events of interest, such as lever presses, allowing for detailed behavioural analyses in relation to task demands.
-    `
-  },
-  {
-    img: `${getImagePrefix()}image/brain_glow.png`,
-    title: "Brainrender and blender visualisations",
-    desc: "3D visualisations of brain regions, networks and activity using Brainrender and Blender.",
-    tags: ["Python", "Blender", "3D Visualisation", "Neuroscience"],
-  },
-  {
-    img: `${getImagePrefix()}image/miniscope.png`,
-    title: "Miniscope CNMFe and Cell encoding analysis",
-    desc: "Processing and analysis of miniscope calcium imaging data using CNMFe and encoding pipelines.",
-    tags: ["Python", "Time series", "Neuroscience"],
-    fulltext:
-    `Miniscope calcium imaging data was processed using the CNMFe algorithm to extract neuronal activity traces from raw imaging data.
-      Resulting activity traces were encoded for their relevance to alcohol/sucrose consumption events.
-      Proportion of cells encoding bouts of consumption were compared across days.
-      Cell proprtions were then correlated with behavioural metrics to identify relationships between neural activity and behaviour.
-      
-      2024 Summer Vacation Research Scholarship under Gavan McNally and Zayra Millan.
-    `
-  }
-  
 ];
 
 export function Projects() {
+              const isSmall = typeof window !== "undefined" ? window.innerWidth < 1024 : false;
+  console.log("isSmall:", isSmall);
   return (
     <section className="py-28 px-8" >
-      <div id="projects" className="container mx-auto mb-20 text-center">
+      <div id="projects" className="container mx-auto mb-5 text-center">
         <Typography variant="h2" color="blue-gray" className="mb-4">
           Projects
         </Typography>
@@ -124,10 +125,58 @@ export function Projects() {
           A collection of my work and projects. Some are interactive!
         </Typography>
       </div>
-      <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-20 md:grid-cols-2 xl:grid-cols-4">
+      <div className="container mx-auto relative">
+        <div className="flex items-center">
+          <button
+        aria-label="Scroll left"
+        onClick={() => {
+          const el = document.getElementById("projects-scroll");
+          if (!el) return;
+          const first = el.querySelector<HTMLElement>("[data-project-card]");
+          const gap = parseFloat(getComputedStyle(el).gap || "16") || 16;
+          const cardW = first ? first.getBoundingClientRect().width : el.clientWidth / 4;
+          const amount = (cardW + gap) * 4;
+          el.scrollBy({ left: -amount, behavior: "smooth" });
+        }}
+        className="z-10 mr-2 rounded-full bg-black/90 text-white p-2 shadow-md"
+          >
+        ‹
+          </button>
+
+          <div
+        id="projects-scroll"
+        className="flex gap-6 overflow-x-auto scroll-smooth pb-4 pr-4"
+        style={{ WebkitOverflowScrolling: "touch" }}
+          >
         {PROJECTS.map((props, idx) => (
-          <ProjectCard key={idx} {...props} />
+
+            <div
+            key={idx}
+            data-project-card
+            className={`flex-shrink-0`}
+            style={{minWidth: isSmall ? "15.5rem" : "19rem", maxWidth: isSmall ? "15.5rem" : "19rem"}}
+            >
+            <ProjectCard {...props} />
+            </div>
         ))}
+          </div>
+
+          <button
+        aria-label="Scroll right"
+        onClick={() => {
+          const el = document.getElementById("projects-scroll");
+          if (!el) return;
+          const first = el.querySelector<HTMLElement>("[data-project-card]");
+          const gap = parseFloat(getComputedStyle(el).gap || "16") || 16;
+          const cardW = first ? first.getBoundingClientRect().width : el.clientWidth / 4;
+          const amount = (cardW + gap) * 4;
+          el.scrollBy({ left: amount, behavior: "smooth" });
+        }}
+        className="z-10 ml-2 rounded-full bg-black/90 text-white p-2 shadow-md"
+          >
+        ›
+          </button>
+        </div>
       </div>
     </section>
   );
