@@ -13,7 +13,9 @@ import {
   Squares2X2Icon,
   XMarkIcon,
   Bars3Icon,
+  DocumentIcon,
 } from "@heroicons/react/24/solid";
+import { Folder, InsertDriveFile } from "@mui/icons-material";
 
 const NAV_MENU = [
   {
@@ -21,10 +23,10 @@ const NAV_MENU = [
     icon: RectangleStackIcon,
     href: "/"
   },
-  // {
-  //   name: "Account",
-  //   icon: UserCircleIcon,
-  // },
+  {
+    name: "Resume",
+    icon: DocumentIcon,
+  },
   {
     name: "Projects",
     icon: CommandLineIcon,

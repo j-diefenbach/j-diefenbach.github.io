@@ -40,29 +40,20 @@ export function Resume() {
             in both neuroscience and computer science, boasting practical research experience and a passion for technology.
             Skilled in machine learning, data analysis, and software development.
           </Typography>
-          <a href="/resume" target="_blank" rel="noopener noreferrer">
-          <Button
-            variant="text"
-            color="gray"
-            className="flex items-center gap-2"
-          >
-            view more
-            <ArrowRightIcon
+            <a href="/resume">
+            <Button
+              variant="text"
+              color="gray"
+              className="flex items-center gap-2"
+            >
+              view more
+              <ArrowRightIcon
               strokeWidth={3}
               className="h-3.5 w-3.5 text-gray-900"
-            />
-          </Button>
-          </a>
-          <Button
-            variant="text"
-            color="gray"
-            className="flex items-center gap-2"
-          >
-            Download CV
-            <SimCardDownload
-              className="h-3.5 w-3.5 text-gray-900"
-            />
-          </Button>
+              />
+            </Button>
+            </a>
+          
         </div>
         <div className="col-span-1 grid gap-y-6 lg:ml-auto pr-0 lg:pr-12 xl:pr-32">
           {RESUME_ITEMS.map((props, idx) => (
