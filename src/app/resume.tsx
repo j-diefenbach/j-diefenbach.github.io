@@ -10,7 +10,7 @@ import {
   AcademicCapIcon
 } from "@heroicons/react/24/solid";
 import { ResumeItem } from "@/components";
-import { Download, FileDownload, SimCardDownload } from "@mui/icons-material";
+import { Download, FileDownload, PagesOutlined, SimCardDownload } from "@mui/icons-material";
 
 const RESUME_ITEMS = [
   {
@@ -40,6 +40,7 @@ export function Resume() {
             in both neuroscience and computer science, boasting practical research experience and a passion for technology.
             Skilled in machine learning, data analysis, and software development.
           </Typography>
+          <a href="/resume" target="_blank" rel="noopener noreferrer">
           <Button
             variant="text"
             color="gray"
@@ -51,6 +52,7 @@ export function Resume() {
               className="h-3.5 w-3.5 text-gray-900"
             />
           </Button>
+          </a>
           <Button
             variant="text"
             color="gray"
@@ -58,7 +60,6 @@ export function Resume() {
           >
             Download CV
             <SimCardDownload
-              strokeWidth={3}
               className="h-3.5 w-3.5 text-gray-900"
             />
           </Button>
