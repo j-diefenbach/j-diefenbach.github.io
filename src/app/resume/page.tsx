@@ -49,8 +49,7 @@ export default function Portfolio() {
                 <Stack>
                     <Button variant="contained" className="flex items-center gap-2"
                     style = {{ fontSize: isSmall ? "12px" : "16px" }}
-                    href={displayItem} download
-                    >
+                    href={displayItem} download                    >
                         Resume PDF
                     </Button>
                     <Button variant="contained" className="flex items-center gap-2"
@@ -82,7 +81,7 @@ export default function Portfolio() {
             
         </Modal>
     </Stack>
-    <section className="w-full" style={{height: isSmall ? "600px" : "900px"}}>
+    <section className="w-full h-[90vh]">
         <object data={displayItem} type="application/pdf" width="100%" height="100%">
             <iframe src={displayItem} width="100%" height="100%" title="Resume PDF" />
         </object>
