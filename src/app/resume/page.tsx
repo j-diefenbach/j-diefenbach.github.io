@@ -82,7 +82,7 @@ export default function Portfolio() {
             
         </Modal>
     </Stack>
-    <section className="w-full h-90rem">
+    <section className="w-full" style={{height: isSmall ? "600px" : "900px"}}>
         <object data={displayItem} type="application/pdf" width="100%" height="100%">
             <iframe src={displayItem} width="100%" height="100%" title="Resume PDF" />
         </object>
