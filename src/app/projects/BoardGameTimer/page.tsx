@@ -29,6 +29,10 @@ export default function Timer() {
     const [playersPassed, setPlayersPassed] = React.useState<number[]>([]) // array of indexes of players who have passed this round
     const [firstPlayer, setFirstPlayer] = React.useState(0) // index of first player in current round
     
+    // trackers for time spent on current turn
+    let turnStartTime = 0
+    const turnTracking = []
+
     // TODO colour list for different games
     // const gameColours = {
     //     // 'Catan': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff'],
@@ -155,11 +159,17 @@ export default function Timer() {
         setTotalTimePerPlayer(Array(players.length).fill(timePerRound * 1000)) // TODO change to starting time
         // endTime[0] = Date.now() + timePerRound * 1000 + timePerTurn * 1000
         endTime[0] = Date.now() + totalTimePerPlayer[currentPlayer] + timePerTurn * 1000
+        if (turnNumber === 0) {
+            endTime[0] = Date.now() + timePerRound * 1000 + timePerTurn * 1000
+        }
+        console.log('timer started with', totalTimePerPlayer[currentPlayer], timePerTurn)
+        console.log('starting timer for player', currentPlayer, endTime[0] - Date.now())
         setPlayerStats(Array(players.length).fill(0))
         setCurrentPlayer(firstPlayer)
         setPlayersPassed([])
         setPremoves([])
         clearPause()
+        console.log('starting timer for player', currentPlayer, endTime[0] - Date.now())
         decrementTimer(endTime, [false])
         setOpen(true)
     }
@@ -563,16 +573,23 @@ export default function Timer() {
                                     {timeLeft < 0 ? '-': ''}{Math.abs((timeLeft / 1000)/60) >= 1 ? (Math.floor((Math.abs(timeLeft) / 1000)/60).toString().padStart(2, '0') + " : ") : ""} {timeLeft < 0 ? Math.ceil(Math.abs(timeLeft)/1000 % 60).toString().padStart(2, '0') : Math.floor(Math.abs(timeLeft)/1000 % 60).toString().padStart(2, '0')}
                                 </Typography>
                             </div>
-                            <Typography variant="h4" 
-                                sx={{ 
-                                    position: 'fixed', 
-                                    top: '20px', 
-                                    left: '20px',
-                                    color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black"
+                            
+                            <IconButton 
+                                // sx = {{color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black"}}
+                                sx = {{
+                                    background: playerColours[currentPlayer % players.length], color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black",
+                                    position: 'fixed', top: '2%', left: '2%'
                                 }}
-                            >
-                                Turn {turnNumber + 1}{roundsEnabled ? (", Round " + (roundNumber + 1)) : ""}
-                            </Typography>
+
+
+                                onClick = {
+                                    (e) => {
+                                    e.stopPropagation()
+
+                                    reset()
+                                    }}>
+                                    <Close sx ={{fontSize:"64pt"}}/>
+                                </IconButton>
                             {/* <Button style={{background: "#ababab", position: 'fixed', right: '10%', bottom:' 10%'}}>
                                 <Typography variant="h6" sx={{ color: 'text.secondary' }}>
                                 next: {players[(currentPlayer + 1) % players.length]}
@@ -725,19 +742,7 @@ export default function Timer() {
                                     }}>
                                     {paused ? <PlayArrow sx ={{fontSize:"64pt"}}/> : <Pause sx ={{fontSize:"64pt"}}/>}
                                 </IconButton>
-                                <IconButton 
-                                // sx = {{color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black"}}
-                                sx = {{background: playerColours[currentPlayer % players.length], color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black"}}
-
-
-                                onClick = {
-                                    (e) => {
-                                    e.stopPropagation()
-
-                                    reset()
-                                    }}>
-                                    <Close sx ={{fontSize:"64pt"}}/>
-                                </IconButton>
+                                
                                 <IconButton 
                                 // sx = {{color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black"}}
                                 sx = {{background: playerColours[currentPlayer % players.length], color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black"}}
@@ -794,22 +799,30 @@ export default function Timer() {
                     onClose = {() => setSpeedDialOpen(false)}
                 >
                     <Box sx = {{maxWidth: '400px', margin: '100px auto',  spacing: '10px'}}>
-                        <Typography variant="h4" 
-                            sx={{ 
-                                position: 'fixed', 
-                                top: '20px', 
-                                left: '20px',
-                                color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black"
+                        
+                        <IconButton
+                            sx = {{
+                                background: playerColours[currentPlayer % players.length], color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black",
+                                position: 'fixed', top: '2%', left: '2%'
                             }}
                         >
-                            Timer Paused
-                        </Typography>
+                            <Close sx ={{fontSize:"48pt"}} onClick = {() => setSpeedDialOpen(false)}/>
+                        </IconButton>
+                        
                         <Button style={{background: "#ababab", position: 'fixed', right: '10%', bottom:' 10%'}}>
                             <Typography variant="h6" sx={{ color: 'text.secondary' }}>
                             next: {players[(currentPlayer + 1) % players.length]}
                             </Typography>
                         </Button>
                         <Stack gap={'30px'}>
+                            <Typography variant="h4" 
+                            sx={{ 
+                                color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black"
+                            }}
+                        >
+                            Turn {turnNumber + 1}{roundsEnabled ? ("\n Round " + (roundNumber + 1)) : ""}
+
+                        </Typography>
                         <Button
                             style={{backgroundColor: 'white'}}
                             startIcon={<AlarmOn />}
@@ -820,33 +833,7 @@ export default function Timer() {
                                 }
                             }
                         >Next round</Button>
-                        <Button
-                            style={{backgroundColor: 'white'}}
-                            startIcon={<Close />}
-                            variant="outlined"
-                            onClick={
-                                () => {
-                                    reset()
-                                }
-                            }
-                        >Reset Timer</Button>
-                        <Button
-                            style={{backgroundColor: 'white'}}
-                            startIcon={paused ? <PlayArrow /> : <Pause />}
-                            variant="outlined"
-                            onClick={
-                                () => {
-                                    setPaused(!paused);
-                                    if (paused) {
-                                        // Resume the timer
-                                        startTimer();
-                                    } else {
-                                        // Pause the timer
-                                        pauseTimer();
-                                    }
-                                }
-                            }
-                        >{paused ? 'Play' : 'Pause'}</Button>
+                        
                         <Button
                             style={{backgroundColor: 'white'}}
                             startIcon={<FlagCircle />}

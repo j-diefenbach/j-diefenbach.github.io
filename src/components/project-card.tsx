@@ -83,14 +83,14 @@ export function ProjectCard({ img, title, desc, route, icon, fulltext }: Project
           onClose = {() => setPopoverOpen(false)}
         >
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg max-w-lg w-full outline-none">  
-          <Typography className="p-4">
+          {fulltext && <Typography className="p-4">
             {fulltext?.split("\n").map((line, idx, arr) => (
               <span key={idx}>
                 {line}
                 {idx < arr.length - 1 && <br />}
               </span>
             ))}
-          </Typography>
+          </Typography>}
           </div>
         </Modal>
       </CardBody>
