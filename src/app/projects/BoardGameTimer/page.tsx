@@ -80,7 +80,7 @@ export default function Timer() {
     const [paused, setPaused] = React.useState(true)
 
     const useAudio = url => {
-    const [audio] = React.useState(new Audio(url));
+    const [audio] = typeof Audio !== 'undefined' ? React.useState(new Audio(url)) : [null];
     const [playing, setPlaying] = React.useState(false);
 
     const toggle = () => setPlaying(!playing);

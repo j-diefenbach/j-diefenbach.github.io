@@ -1,5 +1,5 @@
 const isProd = process.env.NODE_ENV === "production";
- 
+global.HTMLImageElement = typeof window === 'undefined' ? Object : window.HTMLImageElement
 const nextConfig = {
   // basePath: "/out",
   // assetPrefix: "/out",

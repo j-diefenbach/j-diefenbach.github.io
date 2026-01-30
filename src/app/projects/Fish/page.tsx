@@ -4,6 +4,9 @@ import { Peer } from "peerjs";
 import React from 'react';
 const sheet1 = "https://steamusercontent-a.akamaihd.net/ugc/12934413406950940637/6495D42FD5F553CF1CE53CCC425EEFDC0EC81C36/"
 function relativeToScreen(value) {
+  if (typeof window === 'undefined') {
+    return value;
+    }
   let screenWidth = window.innerWidth;
   if (window.innerHeight * 1.29 < window.innerWidth) {
     screenWidth = window.innerHeight * 1.29;
@@ -14,9 +17,15 @@ function CardFromSheet({id, numCardsPerRow, numRows, cardWidth,url, style}) {
   const row = Math.floor(id / numCardsPerRow);
   const col = id % numCardsPerRow;
   function getMeta(url, callback) {
-    const img = new Image();
-    img.src = url;
-    img.onload = function() { callback(this.width, this.height); }
+    if (typeof HTMLElement === 'undefined') {
+        return;
+    } else {
+        const img = new HTMLImageElement();
+        // const img = createImageBitmap(new Blob(url));
+        img.src = url;
+        img.onload = function() { callback(this.width, this.height); }
+    }
+    
   }
   // getMeta(
   //   url,
@@ -1521,6 +1530,45 @@ export default function App() {
     }
   }, [otherPeerName]);
 
+  function ItemCounters() {
+    return <div
+      style={{
+        position: 'absolute',
+        bottom: relativeToScreen(20),
+        left: relativeToScreen(20),
+        display: 'flex',
+        flexDirection: 'row',
+        gap: relativeToScreen(20),
+        zIndex: 1000,
+      }}
+    >
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Egg width={40} height={40}/>
+        <div style={{fontSize: relativeToScreen(20)}}>{eggs.flat().reduce((sum, val) => sum + val, 0)}</div>
+      </div>
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <YoungFish width={40} height={40}/>
+        <div style={{fontSize: relativeToScreen(20)}}>{young.flat().reduce((sum, val) => sum + val, 0)}</div>
+      </div>
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <SchoolFish width={40} height={40}/>
+        <div style={{fontSize: relativeToScreen(20)}}>{schools.flat().reduce((sum, val) => sum + (val > 0 ? 1 : 0), 0)}</div>
+      </div>
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <DrawCard width={40} height={40}/>
+        <div style={{fontSize: relativeToScreen(20)}}>{fishInhand.length}</div>
+      </div>
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Recycle width={40} height={40}/>
+        <div style={{fontSize: relativeToScreen(20)}}>{discardedFish.length}</div>
+      </div>
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <FishFromHand width={40} height={40}/>
+        <div style={{fontSize: relativeToScreen(20)}}>{fishInhand.length}</div>
+      </div>
+    </div>
+  }
+
   // React.useEffect(() => {
   //   console.log('Setting up peer connection with names:', thisPeerName, otherPeerName);
   //   // setupPeerConnection(thisPeerName, otherPeerName, functions);
@@ -2425,26 +2473,6 @@ export default function App() {
           
 
           <div style={{display: 'flex', gap: relativeToScreen(10), marginBottom: relativeToScreen(10)}}
-            onClick = {(e) => {
-              console.log(`Clicked row ${i}`);
-              // set transition div to card position
-              console.log(testDiv);
-              console.log(testDiv.props);
-              console.log(testDiv.state);
-              // testDiv.props.style.left = relativeToScreen(10 + i * (200 + 10));
-              // testDiv.props.style.top = relativeToScreen(10);
-              // testDiv.props.style.backgroundColor = i % 2 === 0 ? 'red' : 'blue';
-              // testDiv.moveTo(
-              //   relativeToScreen(10 + i * (200 + 10)),
-              //   relativeToScreen(10),
-              //   i % 2 === 0 ? 'red' : 'blue'
-              // );
-              // setEggLocation to div position
-              eggLocation.x = relativeToScreen(e.target.getBoundingClientRect().left + window.scrollX);
-              eggLocation.y = relativeToScreen(e.target.getBoundingClientRect().top + window.scrollY);
-              setEggLocation({...eggLocation});
-              console.log(eggLocation);
-            }}
           >
             {/* 
               // TODO show column flippers only on first row
