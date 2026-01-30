@@ -3,9 +3,11 @@ import { Box, Button, Chip, InputAdornment, MenuItem, Modal, Popover, Select, Sp
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from "@mui/material/IconButton";
 import React from "react";
-import { GithubPicker } from 'react-color';
+import { GithubPicker, SketchPicker } from 'react-color';
 import { AlarmOn, BackHand, Close, Flag, FlagCircle, FrontHandOutlined, LabelImportant, MoreHoriz, Pause, PlayArrow, PunchClock, Settings } from "@mui/icons-material";
 import { CogIcon } from "@heroicons/react/24/solid";
+import { time } from "console";
+import { LineChart } from "@mui/x-charts";
 
 export default function Timer() {
     const [timeLeft, setTimeLeft] = React.useState(10)
@@ -30,9 +32,16 @@ export default function Timer() {
     const [firstPlayer, setFirstPlayer] = React.useState(0) // index of first player in current round
     
     // trackers for time spent on current turn
-    let turnStartTime = 0
-    const turnTracking = []
+    const [turnStartTime, setTurnStartTime] = React.useState(0)
+    const [turnTracking, setTurnTracking] = React.useState<number[][]>([])
 
+    // TODO player image selection (urls)
+    // preselectable images
+    // Root meeples
+    const meepleImages = [
+        "https://drive.google.com/uc?export=view&id=1Caii8wzF2Ptqn8n1CTEqJVF0vvl3ybA4",
+    ]
+    
     // TODO colour list for different games
     // const gameColours = {
     //     // 'Catan': ['#ff1500ff', '#25bb78ff', '#e7f824ff', '#5777d7ff'],
@@ -63,11 +72,36 @@ export default function Timer() {
     const [open, setOpen] = React.useState(false)
     const [endTime, _setEndTime] = React.useState([Date.now()])
     const [editingColour, setEditingColour] = React.useState(false)
+    const [editHex, setEditHex] = React.useState("#ababab")
     const [colourEditTarget, setColourEditTarget] = React.useState(-1)
     const [newColour, setNewColour] = React.useState(colours[0])
     const [speedDialOpen, setSpeedDialOpen] = React.useState(false)
     const pauseValue = React.useState([true])[0]
     const [paused, setPaused] = React.useState(true)
+
+    const useAudio = url => {
+    const [audio] = React.useState(new Audio(url));
+    const [playing, setPlaying] = React.useState(false);
+
+    const toggle = () => setPlaying(!playing);
+
+    React.useEffect(() => {
+        playing ? audio.play() : audio.pause();
+        },
+        [playing]
+    );
+    React.useEffect(() => {
+        audio.addEventListener('ended', () => setPlaying(false));
+        return () => {
+        audio.removeEventListener('ended', () => setPlaying(false));
+        };
+    }, []);
+
+    return [playing, toggle];
+    };
+    const [alarmPlaying, toggleAlarm] = useAudio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3');
+    const [countdownPlaying, toggleCountdown] = useAudio('https://www.pixabay.com/sound-effects/download/clock-ticking-2-12366/clock-ticking-2-12366.mp3');
+
     function decrementTimer(end: number[], pause: any[]) {
             console.log(pause[0])
         
@@ -76,6 +110,11 @@ export default function Timer() {
             // console.log(end, time)
             console.log(currentPlayer, time)
             setTimeLeft(time)
+            if (time <= 0) {
+                toggleAlarm()
+            }
+            if (time < 11000 && !countdownPlaying) {
+            }
         }
     }
 
@@ -95,6 +134,23 @@ export default function Timer() {
     }
 
     function nextPlayer() {
+        // time logging
+        console.log('turn start time', turnStartTime / 1000, 'time left', timeLeft / 1000)
+        const timeSpent = turnStartTime - timeLeft
+        console.log(`Player ${players[currentPlayer]} spent ${timeSpent} ms on their turn.`)
+        // set stats
+        const playerTimeArray = turnTracking[currentPlayer] as number[] || []
+        playerTimeArray.push(timeSpent)
+        let newTurnTracking = [...turnTracking]
+        newTurnTracking[currentPlayer] = playerTimeArray
+        setTurnTracking(newTurnTracking)
+        console.log('updated turn tracking:', turnTracking)
+        console.log('turn tracking', turnTracking)
+
+        // reset audio
+        if (countdownPlaying) toggleCountdown()
+        if (alarmPlaying) toggleAlarm()
+
         setTurnNumber(turnNumber + 1)
 
         // set leftover time from player if positive overflow enabled
@@ -124,9 +180,12 @@ export default function Timer() {
             }
         }
         setCurrentPlayer(nextPlayerInRound)
-        endTime[0] = (Date.now() + totalTimePerPlayer[nextPlayerInRound] + timePerTurn * 1000)
-
+        let timeForNextPlayer = totalTimePerPlayer[nextPlayerInRound] + timePerTurn * 1000
+        console.log('next player is', nextPlayerInRound, 'with time', timeForNextPlayer)
+        endTime[0] = (Date.now() + timeForNextPlayer)
         decrementTimer(endTime, [false])
+        setTurnStartTime(timeForNextPlayer)
+        console.log('turn start time set to', turnStartTime)
         // console.log('next player', nextPlayerInRound, 'timeLeft', timeLeft, totalTimePerPlayer[nextPlayerInRound])
 
         // console.log('set end time', endTime)
@@ -160,7 +219,9 @@ export default function Timer() {
         // endTime[0] = Date.now() + timePerRound * 1000 + timePerTurn * 1000
         endTime[0] = Date.now() + totalTimePerPlayer[currentPlayer] + timePerTurn * 1000
         if (turnNumber === 0) {
+            setTurnTracking(Array(players.length).fill().map(() => []))
             endTime[0] = Date.now() + timePerRound * 1000 + timePerTurn * 1000
+            setTurnStartTime(timePerRound * 1000 + timePerTurn * 1000)
         }
         console.log('timer started with', totalTimePerPlayer[currentPlayer], timePerTurn)
         console.log('starting timer for player', currentPlayer, endTime[0] - Date.now())
@@ -210,6 +271,7 @@ export default function Timer() {
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);    
     const openColourPicker = (event: any, i=-1) => {
         setColourEditTarget(i)
+        setEditHex(i === -1 ? newColour : playerColours[i])
         setAnchorEl(event.currentTarget);
         setEditingColour(true)
     };
@@ -288,9 +350,10 @@ export default function Timer() {
                                         horizontal: 'left',
                                     }}
                                 >
-                                    <GithubPicker color="ababab" colors={colours} onChangeComplete={(e: { hex: React.SetStateAction<string>; }) => {
+                                    <SketchPicker color={editHex} presetColors={colours} onChangeComplete={(e: { hex: React.SetStateAction<string>; }) => {
                                         console.log(e.hex)
                                         console.log(colourEditTarget)
+                                        setEditHex(e.hex)
                                         if (colourEditTarget === -1) {
                                             // change for new field
                                             setNewColour(e.hex)
@@ -298,7 +361,6 @@ export default function Timer() {
                                             // change for a certain player index
                                             playerColours[colourEditTarget] = e.hex as string
                                         }
-                                        setEditingColour(false)
                                     }}/>
                                 </Popover>
                                 </>
@@ -415,6 +477,10 @@ export default function Timer() {
                             </>
                         )}
                     </Stack>
+                </Stack>
+                <Stack>
+                    // test images
+                    <img src={"https://lh3.googleusercontent.com/d/1Caii8wzF2Ptqn8n1CTEqJVF0vvl3ybA4"} width={50} height={50} alt="meeple"/>
                 </Stack>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 2, justifyContent: 'center' }}>
                     <Typography>Allow Time Overflow</Typography>
@@ -798,8 +864,32 @@ export default function Timer() {
                     open = {speedDialOpen}
                     onClose = {() => setSpeedDialOpen(false)}
                 >
-                    <Box sx = {{maxWidth: '400px', margin: '100px auto',  spacing: '10px'}}>
-                        
+                    <Box sx = {{overflow: 'scroll', bgcolor: 'white', maxWidth: '400px', margin: '100px auto',  spacing: '10px'}}>
+                        <LineChart
+                            width={350}
+                            height={250}
+                            xAxis={
+                                turnTracking.map((p, i) => ({
+                                    data: p.map((_, index) => index + 1),
+                                    label: 'Turns',
+                                    saleType: 'point',
+                                    tickInterval: 1,
+                                }))
+                            }
+                            series={players.map((p, i) => ({
+                                name: p,
+                                label: p,
+                                color: playerColours[i] !== "#FFFFFF" ? playerColours[i] : "#000000",
+                                data: (turnTracking[i] ?? []).map(x => x / 1000), // convert ms to seconds
+                                strokeWidth: 2,
+                            }))}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        />
                         <IconButton
                             sx = {{
                                 background: playerColours[currentPlayer % players.length], color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black",
@@ -817,7 +907,7 @@ export default function Timer() {
                         <Stack gap={'30px'}>
                             <Typography variant="h4" 
                             sx={{ 
-                                color: colorIsDarkSimple(playerColours[currentPlayer % players.length]) ? "white": "black"
+                                color: "black",
                             }}
                         >
                             Turn {turnNumber + 1}{roundsEnabled ? ("\n Round " + (roundNumber + 1)) : ""}
@@ -885,6 +975,8 @@ export default function Timer() {
                             }}
                         /></div>
                         </Stack>
+
+                        
                     </Box>
                 </Modal>
                 

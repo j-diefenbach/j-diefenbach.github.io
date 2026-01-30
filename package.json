@@ -25,6 +25,7 @@
     "@webgpu/types": "^0.1.65",
     "dayjs": "^1.11.18",
     "next": "13.4.0",
+    "peerjs": "^1.5.5",
     "react": "18",
     "react-color": "^2.19.3",
     "react-dom": "^18.3.1",
