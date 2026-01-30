@@ -20,6 +20,7 @@ function CardFromSheet({id, numCardsPerRow, numRows, cardWidth,url, style}) {
     if (typeof HTMLElement === 'undefined') {
         return;
     } else {
+        console.log("Getting image meta for URL:", url);
         const img = new HTMLImageElement();
         // const img = createImageBitmap(new Blob(url));
         img.src = url;
@@ -944,7 +945,6 @@ const roundCardSheet = "https://steamusercontent-a.akamaihd.net/ugc/967762935080
 
 export default function App() {
   const [eggLocation, setEggLocation] = React.useState({x: relativeToScreen(100), y: relativeToScreen(100)});
-  const testDiv = new TestTransitionDiv({location: eggLocation});
 
 
   const testApiKey = "AIzaSyBaMrc5zsAi0pfTRoBT06erYjBkywRxjIQ"
